@@ -1,14 +1,15 @@
 import pprint
 
-n = 3
-cube = [[[0 for k in range(n)] for j in range(n)] for i in range(n-1)]
-colours = ['W', 'Y', 'R' , 'B', 'G', 'O']
+cube = [[[0 for k in range(3)] for j in range(3)] for i in range(6)]
+colours = ['W', 'O', 'G' , 'R', 'B', 'Y']
 color = 0
 
-for i in range(n-1):
-    for j in range(n):
-            for k in range(n):
-                cube[i][j][k] = colours[color]
-            color += 1
+pprint.pprint(cube)
+
+for i in range(6):
+    for j in range(3):
+        for k in range(3):
+            cube[i][j][k] = colours[color]
+    color += 1
 
 pprint.pprint(cube)
