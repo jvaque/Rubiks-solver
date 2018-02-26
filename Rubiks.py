@@ -34,22 +34,31 @@ class PyCube:
                 for k in range(3):
                     self.rotatedFace[i][j][k] = ''
     
-    def rotateWhite(self):
-        #Copying over face
+    def rotateFace(self, face):
+        #Makes propper rotation of the cube face
+        for i in range(3):
+            k = 2
+            for j in range(3):
+                self.cube[face][i][j] = self.rotatedFace[0][k][i]
+                k -= 1
+    
+    def storeFace(self, face):
+        #Copies over the face selected to the temporal array
         for i in range(3):
             for j in range(3):
-                self.rotatedFace[0][i][j] = self.cube[0][i][j]
+                self.rotatedFace[0][i][j] = self.cube[face][i][j]
+    
+    def rotateWhite(self):
+        #Copying over face
+        self.storeFace(0)
+        
         #copying over the connected edges
         for i in range(4):
             for j in range(3):
                 self.rotatedFace[1][i][j] = self.cube[i+1][0][j]
         
         #move things
-        for i in range(3):
-            k = 2
-            for j in range(3):
-                self.cube[0][i][j] = self.rotatedFace[0][k][i]
-                k -= 1
+        self.rotateFace(0)
         
         for i in range(4):
             for j in range(3):
@@ -62,20 +71,15 @@ class PyCube:
     
     def rotateYellow(self):
         #Copying over face
-        for i in range(3):
-            for j in range(3):
-                self.rotatedFace[0][i][j] = self.cube[5][i][j]
+        self.storeFace(5)
+        
         #copying over the connected edges
         for i in range(4):
             for j in range(3):
                 self.rotatedFace[1][i][j] = self.cube[i+1][2][j]
         
         #move things
-        for i in range(3):
-            k = 2
-            for j in range(3):
-                self.cube[5][i][j] = self.rotatedFace[0][k][i]
-                k -= 1
+        self.rotateFace(5)
         
         for i in range(4):
             for j in range(3):
