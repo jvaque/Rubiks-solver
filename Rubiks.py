@@ -13,8 +13,8 @@ class PyCube:
             color += 1
         
         #for testing
-        # counter = 10
         # for i in range(6):
+        #     counter = 10 * (i+1)
         #     for j in range(3):
         #         for k in range(3):
         #             self.cube[i][j][k] = counter
@@ -24,8 +24,9 @@ class PyCube:
     def show(self):
         print()
         pprint.pprint(self.cube)
-        print()
-        pprint.pprint(self.rotatedFace)
+        # for debugging
+        # print()
+        # pprint.pprint(self.rotatedFace)
     
     def clearRotatedFace(self):
         for i in range(2):
@@ -53,12 +54,37 @@ class PyCube:
         for i in range(4):
             for j in range(3):
                 if i == 3:
-                    self.cube[i+1][0][j] = self.rotatedFace[1][0][j]
+                    self.cube[4][0][j] = self.rotatedFace[1][0][j]
                 else:
                     self.cube[i+1][0][j] = self.rotatedFace[1][i+1][j]
         
         self.clearRotatedFace()
     
+    def rotateYellow(self):
+        #Copying over face
+        for i in range(3):
+            for j in range(3):
+                self.rotatedFace[0][i][j] = self.cube[5][i][j]
+        #copying over the connected edges
+        for i in range(4):
+            for j in range(3):
+                self.rotatedFace[1][i][j] = self.cube[i+1][2][j]
+        
+        #move things
+        for i in range(3):
+            k = 2
+            for j in range(3):
+                self.cube[5][i][j] = self.rotatedFace[0][k][i]
+                k -= 1
+        
+        for i in range(4):
+            for j in range(3):
+                if i == 0:
+                    self.cube[1][2][j] = self.rotatedFace[1][3][j]
+                else:
+                    self.cube[i+1][2][j] = self.rotatedFace[1][i-1][j]
+        
+        self.clearRotatedFace()
     
 
 #Just for testing purposes
@@ -66,6 +92,7 @@ def main():
     testCube = PyCube()
     testCube.show()
     testCube.rotateWhite()
+    testCube.rotateYellow()
     testCube.show()
 
 main()
