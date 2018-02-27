@@ -34,6 +34,12 @@ class PyCube:
                 for k in range(3):
                     self.rotatedFace[i][j][k] = ''
     
+    def storeFace(self, face):
+        #Copies over the face selected to the temporal array
+        for i in range(3):
+            for j in range(3):
+                self.rotatedFace[0][i][j] = self.cube[face][i][j]
+    
     def rotateFace(self, face):
         #Makes propper rotation of the cube face
         for i in range(3):
@@ -42,51 +48,61 @@ class PyCube:
                 self.cube[face][i][j] = self.rotatedFace[0][k][i]
                 k -= 1
     
-    def storeFace(self, face):
-        #Copies over the face selected to the temporal array
-        for i in range(3):
-            for j in range(3):
-                self.rotatedFace[0][i][j] = self.cube[face][i][j]
+    def storeEdgesWY(self, face):
+        #If statement just so I dont make stupid mistakes
+        #Note to future me to remove or have a better system
+        if face == 0:
+            for i in range(4):
+                for j in range(3):
+                    position = i+1
+                    self.rotatedFace[1][i][j] = self.cube[position][0][j]
+        elif face == 5:
+            for i in range(4):
+                for j in range(3):
+                    if i <= 1:
+                        position = i+3
+                    else:
+                        position = i-1
+                    self.rotatedFace[1][i][j] = self.cube[position][2][j]
+        else:
+            print("ERROR!!!!!!!")
     
-    def rotateWhite(self):
-        #Copying over face
-        self.storeFace(0)
-        
-        #copying over the connected edges
-        for i in range(4):
-            for j in range(3):
-                self.rotatedFace[1][i][j] = self.cube[i+1][0][j]
-        
-        #move things
-        self.rotateFace(0)
+    def rotateEdgesWY(self, face):
+        #If statement just so I dont make stupid mistakes
+        #Note to future me to remove or have a better system
+        if face == 0:
+            column = 0
+        elif face == 5:
+            column = 2
+        else:
+            print("ERROR!!!!!!!")
         
         for i in range(4):
             for j in range(3):
                 if i == 3:
-                    self.cube[4][0][j] = self.rotatedFace[1][0][j]
+                    self.cube[4][column][j] = self.rotatedFace[1][0][j]
                 else:
-                    self.cube[i+1][0][j] = self.rotatedFace[1][i+1][j]
+                    self.cube[i+1][column][j] = self.rotatedFace[1][i+1][j]
+    
+    def rotateWhite(self):
+        #Store
+        self.storeFace(0)
+        self.storeEdgesWY(0)
+        
+        #Move
+        self.rotateFace(0)
+        self.rotateEdgesWY(0)
         
         self.clearRotatedFace()
     
     def rotateYellow(self):
-        #Copying over face
+        #Store
         self.storeFace(5)
+        self.storeEdgesWY(5)
         
-        #copying over the connected edges
-        for i in range(4):
-            for j in range(3):
-                self.rotatedFace[1][i][j] = self.cube[i+1][2][j]
-        
-        #move things
+        #Move
         self.rotateFace(5)
-        
-        for i in range(4):
-            for j in range(3):
-                if i == 0:
-                    self.cube[1][2][j] = self.rotatedFace[1][3][j]
-                else:
-                    self.cube[i+1][2][j] = self.rotatedFace[1][i-1][j]
+        self.rotateEdgesWY(5)
         
         self.clearRotatedFace()
     
@@ -96,6 +112,7 @@ def main():
     testCube = PyCube()
     testCube.show()
     testCube.rotateWhite()
+    testCube.show()
     testCube.rotateYellow()
     testCube.show()
 
